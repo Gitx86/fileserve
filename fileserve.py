@@ -34,10 +34,9 @@ def findfile(fileName):
     print('file location is:')
     for root,dir,files in os.walk(app.config['UPLOAD_FOLDER']):
         if fileName in files:
-            print(root)
-            return root
+            return (root,fileName)
         if fileName in dir:
-            return (root)
+            return (root,fileName)
     pass
 
 @app.route('/', methods=['GET', 'POST'])
@@ -88,22 +87,16 @@ def uploaded_files():
 @app.route('/uploads/<filename>')
 def download_file(filename):
     """Function to download a file"""
-    #return send_from_directory(app.config['UPLOAD_FOLDER'], filename) 
-    itempath = os.path.join(app.config['UPLOAD_FOLDER'],filename)
-    print('The file name/path selected is ' + filename)
-    # print(os.path.isdir(itempath))
-    fileLocation = findfile(filename)
-    #itempath = fileLocation
-    print(itempath)
-    if os.path.isdir(itempath):
-        items = os.listdir(itempath)
+    itempath,inputname = findfile(filename)
+    file_itempath = os.path.join(itempath,inputname)
+    print('The file name/path selected is ' + file_itempath)
+    if os.path.isdir(file_itempath):
+        items = os.listdir(file_itempath)
         print('Reached into path')
-        return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in items))
+        return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=inputname), inputname) for inputname in items))
     else:
         print('output file')
-        #return send_from_directory(app.config['UPLOAD_FOLDER'], filename) 
-        
-        return send_from_directory(fileLocation, filename)
+        return send_from_directory(itempath,filename)
 
 
 if __name__ == '__main__':
