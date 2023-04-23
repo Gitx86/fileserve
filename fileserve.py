@@ -7,12 +7,38 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'super secret key'
+
+download_file_template='''
+    <!doctype html>
+    <html>
+    <head>
+    <title>File Transfer</title>
+    </head>
+    <body>
+    <h1>Uploaded Files</h1>
+    <ul>
+    {}
+    </ul>
+    </body>
+    </html>
+'''
+
 
 def allowed_file(filename):
     """Function to check if a filename has an allowed extension"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def findfile(fileName):
+    # Function to find files within the folder, return the path
+    print('file location is:')
+    for root,dir,files in os.walk(app.config['UPLOAD_FOLDER']):
+        if fileName in files:
+            print(root)
+            return root
+        if fileName in dir:
+            return (root)
+    pass
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -57,47 +83,27 @@ def upload_file():
 def uploaded_files():
     """Function to display a list of uploaded files"""
     files = os.listdir(app.config['UPLOAD_FOLDER'])
-    return '''
-    <!doctype html>
-    <html>
-    <head>
-    <title>File Transfer</title>
-    </head>
-    <body>
-    <h1>Uploaded Files</h1>
-    <ul>
-    {}
-    </ul>
-    </body>
-    </html>
-    '''.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in files))
+    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in files))
 
 @app.route('/uploads/<filename>')
 def download_file(filename):
     """Function to download a file"""
     #return send_from_directory(app.config['UPLOAD_FOLDER'], filename) 
-    itempath = os.path.join(app.config['UPLOAD_FOLDER'],filename)+'/'
-    print(itempath)
+    itempath = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+    print('The file name/path selected is ' + filename)
     # print(os.path.isdir(itempath))
+    fileLocation = findfile(filename)
+    #itempath = fileLocation
+    print(itempath)
     if os.path.isdir(itempath):
         items = os.listdir(itempath)
-        print('if command')
-        return '''
-        <!doctype html>
-        <html>
-        <head>
-        <title>File Transfer</title>
-        </head>
-        <body>
-        <h1>Uploaded Files</h1>
-        <ul>
-        {}
-        </ul>
-        </body>
-        </html>
-        '''.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in items))
+        print('Reached into path')
+        return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in items))
     else:
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename) 
+        print('output file')
+        #return send_from_directory(app.config['UPLOAD_FOLDER'], filename) 
+        
+        return send_from_directory(fileLocation, filename)
 
 
 if __name__ == '__main__':
