@@ -39,7 +39,7 @@ def findfile(fileName):
             return (root,fileName)
     pass
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     """Function to handle file upload"""
     if request.method == 'POST':
@@ -78,13 +78,13 @@ def upload_file():
     </html>
     '''
 
-@app.route('/uploads')
+@app.route('/')
 def uploaded_files():
     """Function to display a list of uploaded files"""
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in files))
 
-@app.route('/uploads/<filename>')
+@app.route('/<filename>')
 def download_file(filename):
     """Function to download a file"""
     itempath,inputname = findfile(filename)
