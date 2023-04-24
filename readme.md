@@ -1,0 +1,18 @@
+# README
+
+This script aims to create a webpage using flask with upload and download functionality
+The goal is to create a download webpage for file transfer without credentials
+The upload part of the code is not intended to be used but it is working so I have left it in.
+
+##### Code notes
+This code is written with some help from ChatGPT at the start. The AI was not able to give a solution for searching through multiple layers of folders so some part of the logic was re-written. Also the code is somewhat cleaned up with lesser redundencies.
+
+##### Usage
+Use at your own risk. I will not be responsible for any damages or coruption which could happen when the file is uploaded, downloaded, or stored within your computer or anything inbetween. That said, this is how you can use this script.
+
+Edit line 5 to point to your folder of interest.
+`UPLOAD_FOLDER = 'uploads'`
+
+This should point the script to open that specific folder.
+
+

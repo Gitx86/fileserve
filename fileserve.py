@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os
-from flask import Flask, flash, request, redirect, url_for, send_from_directory
+from flask import Flask, request, redirect, url_for, send_from_directory
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
