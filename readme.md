@@ -16,3 +16,8 @@ Edit line 5 to point to your folder of interest.
 This should point the script to open that specific folder.
 
 
+##### Update
+Edited to use <path:path> as previous ways of involking the webpage had a limitation on not being able to locate documents with the same name
+OLD: webpage will aways be (Server Name)/File or folder name
+New: webpage will have better indexing (Server Name)/Folder name/File name
+

@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','mp4'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -82,22 +82,30 @@ def upload_file():
 def uploaded_files():
     """Function to display a list of uploaded files"""
     files = os.listdir(app.config['UPLOAD_FOLDER'])
-    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=filename), filename) for filename in files))
+    # .format(link,name of link)
+    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(UPLOAD_FOLDER, 'name' )))
 
-@app.route('/<filename>')
-def download_file(filename):
+@app.route('/<path:path>')
+def findpath(path):
     """Function to download a file"""
-    itempath,inputname = findfile(filename)
-    file_itempath = os.path.join(itempath,inputname)
-    print('The file name/path selected is ' + file_itempath)
-    if os.path.isdir(file_itempath):
-        items = os.listdir(file_itempath)
-        print('Reached into path')
-        return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(url_for('download_file', filename=inputname), inputname) for inputname in items))
-    else:
-        print('output file')
-        return send_from_directory(itempath,filename)
+    last_folder=path.split('/')[::-1][0]
+    if last_folder == '':
+        last_folder=path.replace('/','')
+    print('path = '+ path)
+    print('last folder = '+last_folder)
 
+    #Folder check
+    # if os.path.isdir(UPLOAD_FOLDER + '/' + path):
+    #     items = os.listdir(UPLOAD_FOLDER + '/' + path)
+    if os.path.isdir(path):
+        items = os.listdir(path)
+        print(items)
+        # .format(path,filename) loop for all the filename in the folder
+        retoutput=download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(last_folder+'/'+itemname, itemname) for itemname in items))
+        return retoutput
+    else:
+        # Return file
+        return send_from_directory(path.replace(last_folder,''),last_folder)
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0", port=80)
