@@ -10,8 +10,11 @@ This code is written with some help from ChatGPT at the start. The AI was not ab
 ##### Usage
 Use at your own risk. I will not be responsible for any damages or coruption which could happen when the file is uploaded, downloaded, or stored within your computer or anything inbetween. That said, this is how you can use this script.
 
-Edit line 5 to point to your folder of interest.
-`UPLOAD_FOLDER = 'uploads'`
+run file + folder e.g.
+```sudo ./fileserve testfolder```
+
+alternative to run for different script and folder location (testfolder in documents) e.g. 
+```cd ~/Documents; sudo ~/Desktop/fileserve.py  testfolder```
 
 This should point the script to open that specific folder.
 

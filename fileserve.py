@@ -1,8 +1,29 @@
 #!/usr/bin/env python3
 import os
+import sys
 from flask import Flask, request, redirect, url_for, send_from_directory
 
-UPLOAD_FOLDER = 'uploads'
+# Folder Checker
+args = sys.argv
+if len(args) <=1:
+    print('No Folder Specified')
+    exit()
+
+mainFolder = args[1].replace('/','')
+currentFolder = os.listdir('.')
+
+if mainFolder in currentFolder:
+    print('Folder OK')
+    # get full folder path to current folder
+    fullPath = os.getcwd() + '/'
+    print(fullPath)
+else:
+    print('No such folder in directory ' + mainFolder)
+    print('Possible Folders: ')
+    for folder in currentFolder: print('  ' + folder)
+    exit()
+
+UPLOAD_FOLDER = mainFolder
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','mp4'}
 
 app = Flask(__name__)
@@ -83,7 +104,7 @@ def uploaded_files():
     """Function to display a list of uploaded files"""
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     # .format(link,name of link)
-    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(UPLOAD_FOLDER, 'name' )))
+    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(UPLOAD_FOLDER, 'test' )))
 
 @app.route('/<path:path>')
 def findpath(path):
@@ -105,7 +126,7 @@ def findpath(path):
         return retoutput
     else:
         # Return file
-        return send_from_directory(path.replace(last_folder,''),last_folder)
+        return send_from_directory(fullPath + path.replace(last_folder,''),last_folder)
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0", port=80)
