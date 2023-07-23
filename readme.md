@@ -20,6 +20,18 @@ alternative to run for different script and folder location (testfolder in docum
 
 This should point the script to open that specific folder.
 
+##### Requirements 
+This program requires Flask 
+For Debian base linux, which uses apt package manager:
+Either
+``` sudo apt install python3-flask```
+
+Or
+```
+sudo apt install python3-pip3
+sudo pip3 install flask
+```
+
 
 ##### Update
 Edited to use <path:path> as previous ways of involking the webpage had a limitation on not being able to locate documents with the same name
