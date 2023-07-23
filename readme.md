@@ -23,8 +23,11 @@ This should point the script to open that specific folder.
 ##### Requirements 
 This program requires Flask 
 For Debian base linux, which uses apt package manager:
+
 Either
-``` sudo apt install python3-flask```
+``` 
+sudo apt install python3-flask
+```
 
 Or
 ```
