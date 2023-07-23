@@ -21,19 +21,15 @@ alternative to run for different script and folder location (testfolder in docum
 This should point the script to open that specific folder.
 
 ##### Requirements 
-This program requires Flask 
+This program requires Flask
+
 For Debian base linux, which uses apt package manager:
 
-Either
-``` 
-sudo apt install python3-flask
-```
-
-Or
-```
+Either</br>
+``` sudo apt install python3-flask```</br>
+Or</br>```
 sudo apt install python3-pip3
-sudo pip3 install flask
-```
+sudo pip3 install flask```
 
 
 ##### Update
