@@ -104,7 +104,7 @@ def uploaded_files():
     """Function to display a list of uploaded files"""
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     # .format(link,name of link)
-    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(UPLOAD_FOLDER, 'test' )))
+    return download_file_template.format(''.join('<li><a href="{}">{}</a></li>'.format(UPLOAD_FOLDER, UPLOAD_FOLDER )))
 
 @app.route('/<path:path>')
 def findpath(path):
